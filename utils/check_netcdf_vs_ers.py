@@ -231,8 +231,6 @@ class ERS2NetCDFChecker(object):
                     value_string = ers_metadata.get_metadata(['DatasetHeader', 
                         'RasterInfo', 'RegistrationCoord', 'Eastings'])
 
-                print value_string
-
                 try:
                     value = float(value_string)
                 except:
