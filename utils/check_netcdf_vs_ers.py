@@ -29,7 +29,7 @@ console_handler.setFormatter(console_formatter)
 logging.root.addHandler(console_handler)
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)  # Initial logging level for this module
+logger.setLevel(logging.DEBUG)  # Initial logging level for this module
 
 FLOAT_TOLERANCE = 0.000001
 #MAX_BYTES = 500000000 # 500MB
@@ -226,9 +226,13 @@ class ERS2NetCDFChecker(object):
                 try:
                     value_string = ers_metadata.get_metadata(['DatasetHeader', 
                         'RasterInfo', 'RegistrationCoord', 'Longitude'])
+                    assert value_string
                 except:
                     value_string = ers_metadata.get_metadata(['DatasetHeader', 
                         'RasterInfo', 'RegistrationCoord', 'Eastings'])
+
+                print value_string
+
                 try:
                     value = float(value_string)
                 except:
@@ -239,6 +243,7 @@ class ERS2NetCDFChecker(object):
                 try:
                     value_string = ers_metadata.get_metadata(['DatasetHeader', 
                         'RasterInfo', 'RegistrationCoord', 'Latitude'])
+                    assert value_string
                 except:
                     value_string = ers_metadata.get_metadata(['DatasetHeader', 
                         'RasterInfo', 'RegistrationCoord', 'Northings'])
@@ -262,7 +267,7 @@ class ERS2NetCDFChecker(object):
         assert os.path.isfile(
             nc_path), 'NetCDF file %s does not exist' % nc_path
 
-        try:
+        if True:#try:
             ers_gdal_dataset = gdal.Open(ers_path, gdalconst.GF_Read)
             assert ers_gdal_dataset, 'Unable to open ERS file %s using GDAL' % ers_path
 
@@ -421,8 +426,9 @@ class ERS2NetCDFChecker(object):
             print 'min ers_value = %f, mean ers_value = %f, max ers_value = %f' % (min_ers_value, mean_ers_value, max_ers_value)
             print 'min percentage_difference = %f%%, mean percentage_difference = %f%%, max percentage_difference = %f%%' % (min_percentage_difference, mean_percentage_difference, max_percentage_difference)
 
-        except Exception as e:
-            print 'FAIL: %s' % e.message
+        else:#except Exception as e:
+            pass
+            #print 'FAIL: %s' % e.message
 
 
 def main():
